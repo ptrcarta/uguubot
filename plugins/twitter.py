@@ -176,3 +176,27 @@ def twuser(inp, bot=None):
     return u"{}@\x02{}\x02 ({}){} has \x02{:,}\x02 tweets and \x02{:,}\x02 followers.{}" \
            "".format(prefix, user.screen_name, user.name, loc_str, user.statuses_count, user.followers_count,
                      desc_str)
+
+@hook.command("tweet")
+@hook.command
+def tweet(inp, bot=None):
+    """tweet <message> post a twitter status"""
+
+    api = get_api(bot)
+    if not api:
+        return "Error: No Twitter API details."
+
+    try:
+        api.update_status(status=inp)
+    except tweepy.error.TweepError as e:
+        ecode = e[0][0]['code']
+        if  ecode == 186:
+            return "Tweet is over 140 character"
+        elif ecode == 64:
+            return "We're b& m8"
+        elif ecode == 135:
+            return "Authentication failed"
+        else:
+            return e[0][0]['message']
+
+    return u"twitted!"
