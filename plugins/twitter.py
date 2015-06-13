@@ -191,7 +191,7 @@ def tweet(inp, bot=None):
     except tweepy.error.TweepError as e:
         ecode = e[0][0]['code']
         if  ecode == 186:
-            return "Tweet is over 140 character"
+            return "Tweet is over 140 characters"
         elif ecode == 64:
             return "We're b& m8"
         elif ecode == 135:
